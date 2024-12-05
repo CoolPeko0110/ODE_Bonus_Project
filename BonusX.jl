@@ -13,17 +13,22 @@ function draw(Q0, Xs, R, tspan, filename)
         u0 = [Q0]
         prob = ODEProblem(formulas!, u0, tspan, (R, X))
         sol = solve(prob, saveat=0.01)
-        plot!(sol.t, [u[1] for u in sol.u], label="X(g) = $X", lw=1)
+        plot!(sol.t, [u[1] for u in sol.u], label="X(g/L) = $X", lw=1)
     end
     savefig(plt, filename)
+    println("saved to $filename")
 end
 
 function vary_X()
-    Q0 = 50
-    Xs = [5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5, 0]
-    R = 5
+    println("Enter initial sugar amount Q0(g) (e.g., 50):")
+    Q0 = parse(Float64, readline())
+    println("Enter flow rate R(L/min) (e.g., 5):")
+    R = parse(Float64, readline())
+    println("Enter inflow sugar concentrations X(g/L) (e.g., 5,4.5,4,3.5):")
+    Xs = parse.(Float64, split(readline(), ","))
     tspan = (0.0, 60.0)
-    draw(Q0, Xs, R, tspan, "GoalC.png")
+    filename = "GoalC.png"
+    draw(Q0, Xs, R, tspan, filename)
 end
 
 vary_X()

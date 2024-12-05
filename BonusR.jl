@@ -16,14 +16,19 @@ function draw(Q0, X, Rs, tspan, filename)
         plot!(sol.t, [u[1] for u in sol.u], label="R(L) = $R", lw=1)
     end
     savefig(plt, filename)
+    println("saved to $filename")
 end
 
 function vary_R()
-    Q0 = 50
-    X = 0.25
-    Rs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    println("Enter initial sugar amount Q0(g) (e.g., 50):")
+    Q0 = parse(Float64, readline())
+    println("Enter inflow sugar concentration X(g/L) (e.g., 0.25):")
+    X = parse(Float64, readline())
+    println("Enter flow rates R(L/min) (e.g., 1,2,3,4,5):")
+    Rs = parse.(Float64, split(readline(), ","))
     tspan = (0.0, 60.0)
-    draw(Q0, X, Rs, tspan, "GoalA.png")
+    filename = "GoalA.png"
+    draw(Q0, X, Rs, tspan, filename)
 end
 
 vary_R()
